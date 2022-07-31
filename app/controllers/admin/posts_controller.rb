@@ -2,7 +2,6 @@ module Admin
   class PostsController < Admin::ApplicationController
     protect_from_forgery with: :null_session
     def create
-      p params[:image], 'PArAMS'
       @value = Cloudinary::Uploader.upload(params[:image])
       @post = Post.new({ link: @value['secure_url'], title: params[:title], content: params[:content] })
       @post.save
@@ -18,18 +17,32 @@ module Admin
 
     def update
       @post = Post.where(id: params[:id])
-      @value = Cloudinary::Uploader.upload(params[:post][:link]) if params[:post][:link]
+      @value = if params[:post][:link]
+                 Cloudinary::Uploader.upload(params[:post][:link])['secure_url']
+               else
 
-      @post.update({ link: @value['secure_url'], title: params[:post][:title], content: params[:post][:content] })
+                 @value = @post.as_json[0]['link']
 
-      # if @post.save
-      p @post.values, 'NEW POST'
-      # Pusher.trigger('posts-channel', 'new-post', {
-      #                  link: @post.link,
-      #                  title: @post.title,
-      #                  content: @post.content
-      #                })
-      # end
+               end
+
+      @post.update({ link: @value, title: params[:post][:title], content: params[:post][:content] })
+
+      Pusher.trigger('posts-channel', 'post-update', {
+                       data: @post
+
+                     })
+
+      redirect_to('/admin')
+    end
+
+    def destroy
+      @post = Post.find_by(id: params[:id])
+      if @post.delete
+        Pusher.trigger('posts-channel', 'post-delete', { data: params[:id] })
+      else
+        render json: { message: @conversation.errors }
+      end
+
       redirect_to('/admin')
     end
 

@@ -11,6 +11,7 @@ class PostDashboard < Administrate::BaseDashboard
     id: Field::Number,
     link: Field::Image,
     title: Field::Text,
+    visible: Field::Boolean,
     content: Field::Text,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
@@ -21,11 +22,13 @@ class PostDashboard < Administrate::BaseDashboard
   #
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
+
   COLLECTION_ATTRIBUTES = %i[
     id
     link
     title
     content
+    visible
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -35,6 +38,7 @@ class PostDashboard < Administrate::BaseDashboard
     link
     title
     content
+    visible
     created_at
     updated_at
   ].freeze
@@ -46,6 +50,7 @@ class PostDashboard < Administrate::BaseDashboard
     title
     content
     link
+    visible
   ].freeze
 
   # COLLECTION_FILTERS
