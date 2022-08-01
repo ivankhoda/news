@@ -20,18 +20,12 @@ module Admin
       @value = if params[:post][:link]
                  Cloudinary::Uploader.upload(params[:post][:link])['secure_url']
                else
-
                  @value = @post.as_json[0]['link']
-
                end
 
       @post.update({ link: @value, title: params[:post][:title], content: params[:post][:content],
                      visible: params[:post][:visible] })
-
-      Pusher.trigger('posts-channel', 'post-update', {
-                       data: @post
-
-                     })
+      Pusher.trigger('posts-channel', 'post-update', {  data: @post})
 
       redirect_to('/admin')
     end

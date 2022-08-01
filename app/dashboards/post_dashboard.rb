@@ -10,7 +10,10 @@ class PostDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     link: Field::Image,
-    title: Field::Text,
+    title: Field::Text.with_options(
+      searchable: true,
+      searchable_fields: ['title']
+    ),
     visible: Field::Boolean,
     content: Field::Text,
     created_at: Field::DateTime,
