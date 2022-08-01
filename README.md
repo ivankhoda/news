@@ -5,20 +5,29 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+- Ruby version
+  3.1.0
 
-* System dependencies
+- Configuration
+  To lunch app you shall get familiar with the following gems:
 
-* Configuration
+# Administrate for admin panel (https://administrate-demo.herokuapp.com)
 
-* Database creation
+gem "administrate"
+gem 'administrate-field-image'
 
-* Database initialization
+# Cloudinary for storing images links (https://cloudinary.com)
 
-* How to run the test suite
+gem 'cloudinary'
 
-* Services (job queues, cache servers, search engines, etc.)
+# Pusher for server-client websocket communication (https://pusher.com/)
 
-* Deployment instructions
+gem 'pusher'
 
-* ...
+gem 'htmlbeautifier'
+
+# Cors for cors adjustmens
+
+gem 'rack-cors'
+
+- The rest cofigurations are same with out of box "rails new" app.

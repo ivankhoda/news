@@ -7,9 +7,7 @@ module Admin
       @post.save
       if @post.save
         Pusher.trigger('posts-channel', 'new-post', {
-                         link: @post.link,
-                         title: @post.title,
-                         content: @post.content
+                         link: @post.link, title: @post.title, content: @post.content
                        })
       end
       redirect_to('/admin')
@@ -25,7 +23,7 @@ module Admin
 
       @post.update({ link: @value, title: params[:post][:title], content: params[:post][:content],
                      visible: params[:post][:visible] })
-      Pusher.trigger('posts-channel', 'post-update', {  data: @post})
+      Pusher.trigger('posts-channel', 'post-update', { data: @post })
 
       redirect_to('/admin')
     end
