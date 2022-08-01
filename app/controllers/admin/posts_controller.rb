@@ -2,8 +2,9 @@ module Admin
   class PostsController < Admin::ApplicationController
     protect_from_forgery with: :null_session
     def create
-      @value = Cloudinary::Uploader.upload(params[:image])
-      @post = Post.new({ link: @value['secure_url'], title: params[:title], content: params[:content] })
+      p params.keys, params, 'PARAMS'
+      @value = Cloudinary::Uploader.upload(params[:post][:link])
+      @post = Post.new({ link: @value['secure_url'], title: params[:post][:title], content: params[:post][:content] })
       @post.save
       if @post.save
         Pusher.trigger('posts-channel', 'new-post', {
@@ -20,7 +21,7 @@ module Admin
                else
                  @value = @post.as_json[0]['link']
                end
-
+      p params[:post][:visible]
       @post.update({ link: @value, title: params[:post][:title], content: params[:post][:content],
                      visible: params[:post][:visible] })
       Pusher.trigger('posts-channel', 'post-update', { data: @post })
