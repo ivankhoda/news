@@ -2,7 +2,6 @@ module Admin
   class PostsController < Admin::ApplicationController
     protect_from_forgery with: :null_session
     def create
-      p params.keys, params, 'PARAMS'
       @value = Cloudinary::Uploader.upload(params[:post][:link])
       @post = Post.new({ link: @value['secure_url'], title: params[:post][:title], content: params[:post][:content] })
       @post.save
@@ -19,7 +18,7 @@ module Admin
       @value = if params[:post][:link]
                  Cloudinary::Uploader.upload(params[:post][:link])['secure_url']
                else
-                 @value = @post.as_json[0]['link']
+                 @post.as_json[0]['link']
                end
       @post.update({ link: @value, title: params[:post][:title], content: params[:post][:content],
                      visible: params[:post][:visible] })
