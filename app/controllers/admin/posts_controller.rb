@@ -23,7 +23,6 @@ module Admin
       @post.update({ link: @value, title: params[:post][:title], content: params[:post][:content],
                      visible: params[:post][:visible] })
       Pusher.trigger('posts-channel', 'post-update', { data: @post })
-
       redirect_to('/admin')
     end
 
@@ -34,7 +33,6 @@ module Admin
       else
         render json: { message: @conversation.errors }
       end
-
       redirect_to('/admin')
     end
 
